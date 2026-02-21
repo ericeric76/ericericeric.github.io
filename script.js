@@ -50,6 +50,12 @@ function kirimPesan(event) {
 
   const emailKamu = "25.01.eric@uib.edu";
 
+  // ❌ Nama minimal 2 karakter
+  if (nama.length < 2) {
+    alert("Nama harus minimal 2 karakter atau lebih!");
+    return;
+  }
+
   // Regex Gmail valid (harus lengkap dan benar)
   const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
@@ -62,6 +68,13 @@ function kirimPesan(event) {
   // ❌ Harus Gmail lengkap & valid
   if (!gmailRegex.test(email)) {
     alert("Email harus menggunakan Gmail yang valid (contoh: contoh123@gmail.com)");
+    return;
+  }
+
+  // ❌ Username Gmail harus minimal 6 karakter
+  const username = email.split("@")[0];
+  if (username.length < 6) {
+    alert("Username Gmail harus minimal 6 karakter!");
     return;
   }
 
