@@ -44,19 +44,28 @@ window.addEventListener("load", () => {
 function kirimPesan(event) {
   event.preventDefault();
 
-  let nama = document.getElementById("namaPengirim").value;
-  let email = document.getElementById("emailPengirim").value;
-  let pesan = document.getElementById("pesan").value;
+  let nama = document.getElementById("namaPengirim").value.trim();
+  let email = document.getElementById("emailPengirim").value.trim();
+  let pesan = document.getElementById("pesan").value.trim();
 
   const emailKamu = "25.01.eric@uib.edu";
 
-  // VALIDASI: Kalau email sama dengan email kamu
+  // Regex Gmail valid (harus lengkap dan benar)
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+  // ❌ Tidak boleh email kamu sendiri
   if (email.toLowerCase() === emailKamu.toLowerCase()) {
-    alert("Tidak bisa mengirim pesan menggunakan email pemilik website!");
-    return; // Stop di sini
+    alert("Tidak bisa menggunakan email pemilik website!");
+    return;
   }
 
-  // Kalau lolos validasi
+  // ❌ Harus Gmail lengkap & valid
+  if (!gmailRegex.test(email)) {
+    alert("Email harus menggunakan Gmail yang valid (contoh: contoh123@gmail.com)");
+    return;
+  }
+
+  // ✅ Jika lolos semua validasi
   alert(
     "Pesan berhasil dikirim!\n\nNama: " + nama +
     "\nEmail: " + email +
