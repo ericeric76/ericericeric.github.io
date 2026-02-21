@@ -41,40 +41,76 @@ window.addEventListener("load", () => {
 });
 
 // Form kontak
+const namaInput = document.getElementById("namaPengirim");
+const emailInput = document.getElementById("emailPengirim");
+const pesanInput = document.getElementById("pesan");
+
+// Batas karakter
+const batasNama = 60;
+const batasEmail = 256;
+const batasPesan = 1000;
+
+// Batas real-time dengan notifikasi
+namaInput.addEventListener("input", () => {
+  if (namaInput.value.length > batasNama) {
+    namaInput.value = namaInput.value.slice(0, batasNama);
+    alert("Batas maksimal nama " + batasNama + " karakter!");
+  }
+});
+
+emailInput.addEventListener("input", () => {
+  if (emailInput.value.length > batasEmail) {
+    emailInput.value = emailInput.value.slice(0, batasEmail);
+    alert("Batas maksimal email " + batasEmail + " karakter!");
+  }
+});
+
+pesanInput.addEventListener("input", () => {
+  if (pesanInput.value.length > batasPesan) {
+    pesanInput.value = pesanInput.value.slice(0, batasPesan);
+    alert("Batas maksimal pesan " + batasPesan + " karakter!");
+  }
+});
+
+// Fungsi kirim pesan dengan validasi lengkap
 function kirimPesan(event) {
   event.preventDefault();
 
-  let nama = document.getElementById("namaPengirim").value.trim();
-  let email = document.getElementById("emailPengirim").value.trim();
-  let pesan = document.getElementById("pesan").value.trim();
+  let nama = namaInput.value.trim();
+  let email = emailInput.value.trim();
+  let pesan = pesanInput.value.trim();
 
   const emailKamu = "25.01.eric@uib.edu";
 
   // ❌ Nama minimal 2 karakter
   if (nama.length < 2) {
-    alert("Nama harus minimal 2 karakter atau lebih!");
+    alert("Nama harus minimal 2 karakter!");
     return;
   }
 
-  // Regex Gmail valid (harus lengkap dan benar)
-  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-  // ❌ Tidak boleh email kamu sendiri
+  // ❌ Email tidak boleh milik pemilik website
   if (email.toLowerCase() === emailKamu.toLowerCase()) {
     alert("Tidak bisa menggunakan email pemilik website!");
     return;
   }
 
   // ❌ Harus Gmail lengkap & valid
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
   if (!gmailRegex.test(email)) {
     alert("Email harus menggunakan Gmail yang valid (contoh: contoh123@gmail.com)");
     return;
   }
 
-  // ❌ Username Gmail harus minimal 6 karakter
+  // ❌ Username Gmail minimal 6 karakter
   const username = email.split("@")[0];
   if (username.length < 6) {
     alert("Username Gmail harus minimal 6 karakter!");
+    return;
+  }
+
+  // ❌ Pesan maksimal 1000 karakter
+  if (pesan.length > batasPesan) {
+    alert("Pesan terlalu panjang, maksimal " + batasPesan + " karakter!");
     return;
   }
 
@@ -85,9 +121,10 @@ function kirimPesan(event) {
     "\nPesan: " + pesan
   );
 
-  document.getElementById("namaPengirim").value = "";
-  document.getElementById("emailPengirim").value = "";
-  document.getElementById("pesan").value = "";
+  // Reset form
+  namaInput.value = "";
+  emailInput.value = "";
+  pesanInput.value = "";
 }
 
 // Smooth scroll nav
